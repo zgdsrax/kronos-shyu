@@ -1,0 +1,41 @@
+version: 1
+disable_existing_loggers: false
+
+formatters:
+  detailed:
+    format: "%(asctime)s [%(levelname)s] %(name)s — %(message)s"
+    datefmt: "%Y-%m-%d %H:%M:%S UTC"
+  simple:
+    format: "[%(levelname)s] %(message)s"
+
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: INFO
+    formatter: simple
+    stream: ext://sys.stdout
+
+  file:
+    class: logging.handlers.TimedRotatingFileHandler
+    level: DEBUG
+    formatter: detailed
+    filename: logs/kronos_bot.log
+    when: midnight
+    backupCount: 7
+    utc: true
+    encoding: utf-8
+
+loggers:
+  kronos_bot:
+    level: DEBUG
+    handlers: [console, file]
+    propagate: false
+
+  src:
+    level: DEBUG
+    handlers: [console, file]
+    propagate: false
+
+root:
+  level: WARNING
+  handlers: [console]

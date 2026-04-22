@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  kronos-bot:
+    build: .
+    container_name: kronos_bot
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./config:/app/config:ro
+      - ./logs:/app/logs
+    environment:
+      - TZ=UTC
+      - PYTHONUNBUFFERED=1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+
+  # Optional: Run backtest as one-off job
+  kronos-backtest:
+    build: .
+    container_name: kronos_backtest
+    volumes:
+      - ./config:/app/config:ro
+    command: ["python", "src/bot.py", "--backtest"]
+    env_file:
+      - .env

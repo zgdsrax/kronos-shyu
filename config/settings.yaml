@@ -1,0 +1,68 @@
+# ── UNIVERSE ──────────────────────────────────────────
+symbols:
+  - BTC
+  - ETH
+  - SOL
+  - LINK
+  - HYPE
+timeframe: "15m"
+lookback_candles: 150
+
+# ── KRONOS MODEL ──────────────────────────────────────
+kronos:
+  model_id: "NeoQuasar/Kronos-small"
+  pred_len: 4
+  threshold_pct: 0.5
+  device: "cpu"
+
+# ── INDICATORS ────────────────────────────────────────
+indicators:
+  rsi_length: 14
+  atr_length: 14
+  volume_ma_length: 20
+  vwap_min_candles: 5
+
+# ── ENTRY FILTERS ─────────────────────────────────────
+filters:
+  long:
+    rsi_min: 40
+    rsi_max: 70
+    require_price_above_vwap: true
+    volume_ratio_min: 1.2
+  short:
+    rsi_min: 30
+    rsi_max: 60
+    require_price_below_vwap: true
+    volume_ratio_min: 1.2
+
+# ── RISK MANAGEMENT ───────────────────────────────────
+risk:
+  account_size_usd: 10000.0
+  risk_per_trade_pct: 0.01
+  max_position_usd: 2000.0
+  sl_atr_mult: 1.5
+  tp_atr_mult: 3.0
+  min_rr_ratio: 1.5
+
+# ── CIRCUIT BREAKERS ──────────────────────────────────
+circuit_breakers:
+  max_daily_loss_pct: 0.03
+  max_consecutive_losses: 4
+  cooldown_minutes: 120
+
+# ── DEDUPLICATION ─────────────────────────────────────
+dedup:
+  cooldown_candles: 4
+  price_tolerance_pct: 0.005
+
+# ── SCHEDULER ─────────────────────────────────────────
+scheduler:
+  cycle_seconds: 900
+  symbol_delay_seconds: 2
+
+# ── TELEGRAM ──────────────────────────────────────────
+telegram:
+  parse_mode: "HTML"
+  send_no_signal: false
+  send_daily_summary: true
+  summary_hour_utc: 0
